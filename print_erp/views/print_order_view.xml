@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Print Order form view -->
+        <record model="ir.ui.view" id="view_print_order_tree">
+            <field name="name">view.print.order.tree</field>
+            <field name="model">print.order</field>
+            <field name="arch" type="xml">
+                <tree string="Printing Orders" delete="false" create="false" edit="false">
+                    <field name="id" invisible="1"/>
+                    <field name="crm_lead_id" />
+                    <field name="company_id" />
+                    <field name="partner_id"/>
+                    <field name="date_order"/>
+                    <field name="confirmation_date"/>
+                    <field name="sale_done"/>
+                    <field name="state"/>
+                    <field name="amount_total"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_print_order_kanban">
+            <field name="name">view.print.order.kanban</field>
+            <field name="model">print.order</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" delete="false" create="false" edit="false">
+                    <field name="image_medium"/>
+                    <field name="partner_id"/>
+                    <field name="date_order"/>
+                    <field name="state"/>
+                    <field name="currency_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img t-att-src="kanban_image('print.order', 'image_medium', record.id.value)"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <span t-if="record.partner_id.value">
+                                            <field name="partner_id"/>
+                                        </span>
+                                    </strong>
+                                    <div>
+                                        <strong>
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                    <div>
+                                        <strong>
+                                            <field name="date_order"/>
+                                        </strong>
+                                    </div>
+                                    <div>
+                                        <strong>
+                                            <field name="state"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_print_order_form">
+            <field name="name">view.print.order.form</field>
+            <field name="model">print.order</field>
+            <field name="arch" type="xml">
+                <form string="Print Order" delete="false" create="false" edit="false">
+                    <header>
+                        <button name="sent_order" string="Send by Email" type="object" states="draft" class="oe_highlight"/>
+                        <button name="confrim_sale_order" string="Confrim Order" type="object" states="confirm" class="oe_highlight"/>
+                        <button name="open_order" string="Sale Order" type="object" states="sale_order" class="oe_highlight"/>
+                        <button name="%(print_erp.action_print_order_rejected)d" string="Reject" states="draft,confirm" 
+                            type="action" class="oe_highlight" />
+                        <button name="re_sale_order" string="Repeat Order" type="object" states="sale_order" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,sale_order"/>
+                    </header>
+                    <sheet>
+                        <field name="image_medium" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h4><field name="name"/></h4>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                            </group>
+                            <group>
+                                <field name="date_order"/>
+                                <field name="confirmation_date"/>
+                            </group>
+                        </group>
+                        <field name="id" invisible="1"/>
+                        <field name="crm_lead_id" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                        <notebook>
+                            <page string="Print Order Lines">
+                                <group colspan="4">
+                                    <field name="print_order_ids" nolabel="1"/>
+                                </group>
+                            </page>
+                            <page string="Attachment's">
+                                <group colspan="4">
+                                    <field name="print_attachment_ids" nolabel="1"
+                                        context="{'form_view_ref': 'print_erp.view_attachment_printerps_form', 'tree_view_ref': 'print_erp.view_attachment_printerps_tree'}" />
+                                </group>
+                            </page>
+                            <page string="Reject Reason" attrs="{'invisible': [('state', '!=', 'rejected')]}">
+                                <gorup string="Reject Reason" col="2">
+                                    <group>
+                                        <field name="end_date" placeholder="Enter End Date"/>
+                                        <field name="reject_reason" placeholder="Enter Reason"/>
+                                    </group>
+                                    <group/>
+                                </gorup>
+                            </page>
+                            <page string="Note">
+                                <group colspan="4">
+                                    <field name="note" nolabel="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="amount_total" />
+                            </div>
+                            <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Print order Form from the Lead Button -->
+        <record model="ir.ui.view" id="view_print_order_form1">
+            <field name="name">view.print.order.form</field>
+            <field name="model">print.order</field>
+            <field name="arch" type="xml">
+                <form string="Print Order" delete="false">
+                    <header>
+                        <button name="sent_order" string="Send by Email" type="object" states="draft" class="oe_highlight"/>
+                        <button name="confrim_sale_order" string="Confrim Order" type="object" states="confirm" class="oe_highlight"/>
+                        <button name="open_order" string="Sale Order" type="object" states="sale_order" class="oe_highlight"/>
+                        <button name="%(print_erp.action_print_order_rejected)d" string="Reject" states="draft,confirm" 
+                            type="action" class="oe_highlight" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,sale_order"/>
+                    </header>
+                    <sheet>
+                        <field name="image_medium" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h4><field name="name"/></h4>
+                        </div>
+                        <group>
+                            <group>
+                                <h4><field name="name"/></h4>
+                                <newline/>
+                                <field name="partner_id"/>
+                            </group>
+                            <group>
+                                <field name="date_order"/>
+                                <field name="confirmation_date"/>
+                            </group>
+                        </group>
+                        <field name="id" invisible="1"/>
+                        <field name="crm_lead_id" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                        <notebook>
+                            <page string="Print Order Lines">
+                                <group colspan="4">
+                                    <field name="print_order_ids" nolabel="1"/>
+                                </group>
+                            </page>
+                            <page string="Attachment">
+                                <group colspan="4">
+                                    <field name="print_attachment_ids" nolabel="1"
+                                        context="{'form_view_ref': 'print_erp.view_attachment_printerps_form', 'tree_view_ref': 'print_erp.view_attachment_printerps_tree'}" />
+                                </group>
+                            </page>
+                            <page string="Note">
+                                <group colspan="4">
+                                    <field name="note" nolabel="1"/>
+                                </group>
+                            </page>
+                            <page string="Reject Reason" attrs="{'invisible': [('state', '!=', 'rejected')]}">
+                                <gorup string="Reject Reason" col="2">
+                                    <group>
+                                        <field name="end_date" placeholder="Enter End Date"/>
+                                        <field name="reject_reason" placeholder="Enter Reason"/>
+                                    </group>
+                                    <group/>
+                                </gorup>
+                            </page>
+                        </notebook>
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="amount_total" />
+                            </div>
+                            <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary'/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_submit_print_order_form" string="Save Order" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Discard" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_print_order_search">
+            <field name="name">view.print.order.search</field>
+            <field name="model">print.order</field>
+            <field name="arch" type="xml">
+                <search string="Printing Orders">
+                    <field name="crm_lead_id" />
+                    <field name="company_id" />
+                    <field name="partner_id"/>
+                    <field name="date_order"/>
+                    <field name="confirmation_date"/>
+                    <field name="state"/>
+                    <field name="amount_total"/>
+                    <filter name="customer" string="Customer" domain="[]" context="{'group_by':'partner_id'}"/>
+                    <filter string="Order Month" domain="[]" context="{'group_by':'date_order'}"/>
+                    <filter string="Confirm Oder" name="confirm" domain="[('state','=','confirm')]"/>
+                    <filter string="Sale Order" name="sale_order" domain="[('state','=','sale_order')]"/>
+                    <filter string="Cancel" name="cancel" domain="[('state','in',('sale','cancel'))]"/>
+                    <filter name="month_task" string="Current Month" domain="[('date_order','&lt;',(context_today()+relativedelta(months=1)).strftime('%%Y-%%m-01')), ('date_order','&gt;=',time.strftime('%%Y-%%m-01'))]"/>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_printing_orders" model="ir.actions.act_window">
+            <field name="name">Printing Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">print.order</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_print_order_kanban"/>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{"search_default_customer":1, "search_default_month_task":1}</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Create a Print Order.
+              </p>
+            </field>
+        </record>
+        
+        <menuitem id="menu_printing_orders" name="Printing Orders"
+                action="action_printing_orders" parent="sales_team.menu_sales"
+                sequence="10"/>
+        
+        <!-- Print Order Line -->
+        <record model="ir.ui.view" id="view_print_order_line_tree">
+            <field name="name">view.print.order.line.tree</field>
+            <field name="model">print.order.line</field>
+            <field name="arch" type="xml">
+                <tree string="Print Order Line">
+                    <field name="id" invisible="1"/>
+                    <field name="name" />
+                    <field name="product_categ_id" string="Product Type"/>
+                    <field name="product_id" invisible="1"/>
+                    <field name="product_size_id" />
+                    <field name="sheet_id" />
+                    <field name="customized_size" />
+                    <field name="product_uom_qty" string="Quantity"/>
+                    <field name="price_unit"/>
+                    <field name="use_sheet" />
+                    <field name="westage" />
+                    <field name="price_total"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_print_order_line_form">
+            <field name="name">view.print.order.line.form</field>
+            <field name="model">print.order.line</field>
+            <field name="arch" type="xml">
+                <form string="Print Order Line" delete="false">
+                    <sheet>
+                        <field name="image_medium" widget="image" class="oe_avatar"/>
+                        <field name="id" invisible="1"/>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="product_categ_id" string="Product Type"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="product_id" domain="[('categ_id','=',product_categ_id)]" options="{'no_create': True}"
+                                    context="{'quantity':product_uom_qty, 'company_id': company_id}" />
+                                <field name="product_size_id"
+                                    attrs="{'invisible': [('customized_size', '=', True)]}"
+                                    context="{'product_id' : product_id, 'from_print_order': 'true'}" options="{'no_create': True}"/>
+                                <field name="sheet_id" 
+                                    context="{'product_id' : product_id, 'from_print_order': 'true', 'form_view_ref':'print_erps.product_template_sheet_form_view', 'tree_view_ref':'print_erps.product_template_sheet_tree_view'}" />
+                                <field name="customized_size" />
+                                <field name="height" attrs="{'invisible': [('customized_size', '=', False)], 'required': [('customized_size', '=', True)]}"/>
+                                <field name="weight" attrs="{'invisible': [('customized_size', '=', False)], 'required': [('customized_size', '=', True)]}"/>
+                            </group>
+                            
+                            <group>
+                                <field name="product_uom_qty" string="Ordered Quantity"/>
+                                <field name="price_unit"/>
+                                <field name="use_sheet" />
+                                <field name="westage" />
+                                <field name="price_total"/>
+                            </group>
+                        </group>
+                        <field name="note" class="oe_inline" placeholder="Setup default terms and conditions in your company settings."/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

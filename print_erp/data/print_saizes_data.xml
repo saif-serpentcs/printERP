@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_size_8_5_X_11" model="product.sizes">
+            <field name="name">8.5” x 11.0”</field>
+            <field name="weight" eval="8.5"/>
+            <field name="height" eval="11.0"/>
+        </record>
+        
+        <record id="product_size_8_5_X_14" model="product.sizes">
+            <field name="name">8.5” x 14.0”</field>
+            <field name="weight" eval="8.5"/>
+            <field name="height" eval="14.0"/>
+        </record>
+        
+        <record id="product_size_9_X_12" model="product.sizes">
+            <field name="name">9” x 12.0”</field>
+            <field name="weight" eval="9"/>
+            <field name="height" eval="12.0"/>
+        </record>
+        
+        <record id="product_size_11_X_17" model="product.sizes">
+            <field name="name">11” x 17.0”</field>
+            <field name="weight" eval="11"/>
+            <field name="height" eval="17.0"/>
+        </record>
+    </data>
+</odoo>

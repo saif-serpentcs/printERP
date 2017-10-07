@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Colour -->
+        <record id="product_attribute_color" model="product.attribute">
+            <field name="name">Colour</field>
+        </record>
+        
+        <record id="product_attribute_value_single" model="product.attribute.value">
+            <field name="name">Single Colour</field>
+            <field name="attribute_id" ref='product_attribute_color'/>
+        </record>
+        
+        <record id="product_attribute_value_multi" model="product.attribute.value">
+            <field name="name">Multi Colour</field>
+            <field name="attribute_id" ref='product_attribute_color'/>
+        </record>
+
+
+        <!-- Material -->
+        <record id="product_attribute_material" model="product.attribute">
+            <field name="name">Material</field>
+        </record>
+        
+        <record id="product_attribute_value_300gsm_matt" model="product.attribute.value">
+            <field name="name">300 GSM MATT</field>
+            <field name="attribute_id" ref='product_attribute_material'/>
+        </record>
+        
+        <record id="product_attribute_value_350gsm_matt" model="product.attribute.value">
+            <field name="name">350 GSM MATT</field>
+            <field name="attribute_id" ref='product_attribute_material'/>
+        </record>
+    </data>
+</odoo>

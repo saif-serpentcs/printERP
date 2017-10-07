@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- BOM Inherit View -->
+        <record id ="mrp_bom_form_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.bom.form.inherit</field>
+            <field name="model">mrp.bom</field>
+            <field name ="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="arch" type ="xml">
+                <xpath expr="//field[@name='routing_id']" position="before">
+                    <field name="product_size_id" widget="selection" context="{'product_id' : product_id, 'product_from_bom': 'true'}" />
+                    <field name="sheet_id" widget="selection" context="{'product_id' : product_id, 'product_from_bom': 'true'}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

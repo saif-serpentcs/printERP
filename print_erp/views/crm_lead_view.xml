@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <!-- Opportunities Inherit View -->
+        <record id ="crm_case_form_view_oppor_inherited" model="ir.ui.view">
+            <field name="name">crm.lead.form.opportunity.inherited</field>
+            <field name="model">crm.lead</field>
+            <field name ="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+            <field name="arch" type ="xml">
+                <xpath expr="//button[@name='toggle_active']" position="after">
+                    <button name="open_print_order_form" type="object" string="Print Order" class="oe_stat_button" icon="fa-map-o"
+                        context="{'default_crm_lead_id':id}"/>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

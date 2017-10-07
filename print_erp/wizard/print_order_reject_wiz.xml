@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data> 
+
+        <record id="view_print_order_rejected_form" model="ir.ui.view">
+            <field name="name">view.print.order.rejected.form</field>
+            <field name="model">print.order.reject.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Order Action Reject">
+                    <group string="Reject End Date">
+                        <field name="end_date" placeholder='Enter End Date' required="1" class="oe_inline"/>
+                     </group>
+                     <group col='4' string="Reject Reason">
+                        <field name="reject_remarks" placeholder='Enter Reject Reason' required="1" nolabel="1"/>
+                     </group>
+                     <footer>
+                        <button icon="gtk-execute" name="action_reject" string="Reject" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_print_order_rejected" model="ir.actions.act_window">
+            <field name="name">Print Order Action Reject</field>
+            <field name="res_model">print.order.reject.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="domain">[]</field>
+            <field name="target">new</field>
+            <field name="context">{'no_edit':True, 'hide_create_button':True}</field>
+        </record>
+
+    </data>
+</openerp>

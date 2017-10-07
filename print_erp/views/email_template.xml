@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <!--Email template -->
+        
+        <record id="email_template_order_created" model="mail.template">
+            <field name="name">Lead Mass Mail</field>
+            <field name="model_id" ref="model_print_order"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="email_to">${ctx['partner_id'].email|safe}</field>
+            <field name="email_from">${user.partner_id.email or ''}</field>
+            <field name="subject">Fwd: Print Order: Confrimed</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Hello ${object.partner_id.name},</p>
+
+    <p>This email is to inform you that your Order is Confirm : </p>
+    
+    <table width="100%" style="padding-top: 5px;padding-right: 5px;padding-bottom: 5px;padding-left: 5px;">
+        % if object.date_due:
+            <tr width="100%">
+                <td width="10%">
+                    <strong>Date Order</strong>
+                </td>
+                <td width="2%">
+                    <strong> : </strong>
+                </td>
+                <td width="88%">
+                    <strong>${object.date_order or ''}</strong>
+                </td>
+            </tr>
+        % endif
+    </table>
+    
+    <br/>
+    
+    <table width="100%" style="padding-top: 5px;padding-right: 5px;padding-bottom: 5px;padding-left: 5px;">
+        <tr width="100%" align="center" style="background-color: #B2B2B2;">
+            <td width="60%" style="padding-top: 3px;padding-right: 5px;padding-bottom: 3px;padding-left: 5px;"><b>Description</b></td>
+            <td width="20%" align="right"style="padding-top: 3px;padding-right: 5px;padding-bottom: 3px;padding-left: 5px;" width="10%"><b>Qty</b></td>
+            <td width="20%" align="right" style="padding-top: 3px;padding-right: 5px;padding-bottom: 3px;padding-left: 5px;" width="20%"><b>Amount</b></td>
+        </tr>
+        %for print_line in object.print_order_ids:
+            <tr width="100%">
+                <td style="padding-top: 3px;padding-right: 5px;padding-bottom: 3px;padding-left: 5px;">${print_line.name}</td>
+                <td style="padding-top: 3px;padding-right: 5px;padding-bottom: 3px;padding-left: 5px;" align="right">${print_line.product_uom_qty}</td>
+                <td style="padding-top: 3px;padding-right: 5px;padding-bottom: 3px;padding-left: 5px;" align="right"><strong>${print_line.price_total} ${object.currency_id.symbol or ''}</strong></td>
+            </tr>
+            <tr>
+               <tr>
+                   <td colspan="7" width="100%" style="text-align:left;border-bottom: 1px solid lightgrey;"/>
+               </tr>
+            </tr>
+        %endfor
+        <tr width="100%" align="center">
+            <td align="center"><b></b></td>
+            <td align="right" style="padding-top: 3px;padding-right: 5px;padding-bottom: 3px;padding-left: 5px;"><b>Total</b></td>
+            <td align="right" style="padding-top: 3px;padding-right: 5px;padding-bottom: 3px;padding-left: 5px;"><strong>${object.amount_total  or ''} ${object.currency_id.symbol or ''}</strong></td>
+        </tr>
+    </table
+    <br/>
+    <p>Thank you !</p>
+    </div>
+</div>
+            ]]></field>
+        </record>
+    </data>
+</openerp>

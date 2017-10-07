@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    
+    <!-- Inherit Sale Order view-->
+    <record id ="view_order_form_inherited" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name ="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type ="xml">
+            <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="before">
+                <field name="product_categ_id" string="Product Type"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="after">
+                <field name="product_size_id" attrs="{'invisible': [('customized_size', '=', True)]}"
+                    context="{'product_id' : product_id, 'from_soline': 'true'}"/>
+                <field name="sheet_id" 
+                    context="{'product_id' : product_id, 'from_print_order': 'true', 'form_view_ref':'print_erps.product_template_sheet_form_view', 'tree_view_ref':'print_erps.product_template_sheet_tree_view'}" />
+                <field name="customized_size" />
+                <field name="height" attrs="{'invisible': [('customized_size', '=', False)], 'required': [('customized_size', '=', True)]}"/>
+                <field name="weight" attrs="{'invisible': [('customized_size', '=', False)], 'required': [('customized_size', '=', True)]}"/>
+                <field name="use_sheet" readonly="1"/>
+                <field name="westage" readonly="1"/>
+            </xpath>
+            
+            <xpath expr="//tree" position="replace">
+                <tree>
+                    <field name="sequence" widget="handle"/>
+                    <field name="product_categ_id" string="Product Type"/>
+                    <field name="name"/>
+                    <field name="product_size_id" />
+                    <field name="sheet_id" />
+                    <field name="customized_size" />
+                    <field name="product_uom_qty"
+                        string="Ordered Qty"
+                        context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"/>
+                    <field name="price_unit" attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+                    <field name="qty_invoiced" invisible="context.get('hide_sale')"/>
+                    <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
+                        attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+                    <field name="discount" groups="sale.group_discount_per_so_line"/>
+                    <field name="price_subtotal" widget="monetary" groups="sale.group_show_price_subtotal"/>
+                    <field name="price_total" widget="monetary" groups="sale.group_show_price_total"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+</odoo>

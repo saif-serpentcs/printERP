@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- product category -->
+        <record id="product_category_business_card" model="product.category">
+            <field name="name">Business Card</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+        
+        <record id="product_category_letterheads" model="product.category">
+            <field name="name">letterheads</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+        
+        <record id="product_category_envelopes" model="product.category">
+            <field name="name">Envelopes</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+        
+        <record id="product_category_id_card" model="product.category">
+            <field name="name">Id Cards</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+        
+        <record id="product_category_certificates" model="product.category">
+            <field name="name">certificates</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+        
+        <record id="product_category_paper_files" model="product.category">
+            <field name="name">paper files</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+        
+        <record id="product_category_receipt_books" model="product.category">
+            <field name="name">receipt books</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+        
+        <record id="product_category_brochures" model="product.category">
+            <field name="name">Brochures</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+        
+        <record id="product_category_folders_dockets" model="product.category">
+            <field name="name">Folders-Dockets</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+        
+        <record id="product_category_flyers" model="product.category">
+            <field name="name">Flyers</field>
+            <field name="parent_id" ref='product.product_category_all'/>
+        </record>
+    </data>
+</odoo>

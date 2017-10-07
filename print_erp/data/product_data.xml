@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Product -->
+        <record id="product_product_template_business_card" model="product.template">
+            <field name="name">Business Card</field>
+            <field name="image" type="base64" file="print_erp/static/img/BusinessCardBB_Tn.jpg"/>
+            <field name="categ_id" ref='product_category_business_card'/>
+        </record>
+        
+        <record id="product_product_template_letterheads" model="product.template">
+            <field name="name">letterheads</field>
+            <field name="image" type="base64" file="print_erp/static/img/Letter-Head.jpg"/>
+            <field name="categ_id" ref='product_category_letterheads'/>
+        </record>
+        
+        <record id="product_product_template_envelopes" model="product.template">
+            <field name="name">Envelopes</field>
+            <field name="image" type="base64" file="print_erp/static/img/Envelopes.jpg"/>
+            <field name="categ_id" ref='product_category_envelopes'/>
+        </record>
+        
+        <record id="product_product_template_id_card" model="product.template">
+            <field name="name">Id Cards</field>
+            <field name="image" type="base64" file="print_erp/static/img/id_card.jpg"/>
+            <field name="categ_id" ref='product_category_id_card'/>
+        </record>
+        
+        <record id="product_product_template_certificates" model="product.template">
+            <field name="name">Certificates</field>
+            <field name="image" type="base64" file="print_erp/static/img/Certificate.jpg"/>
+            <field name="categ_id" ref='product_category_certificates'/>
+        </record>
+        
+        <record id="product_product_template_paper_files" model="product.template">
+            <field name="name">Paper Files</field>
+            <field name="image" type="base64" file="print_erp/static/img/Files.jpg"/>
+            <field name="categ_id" ref='product_category_paper_files'/>
+        </record>
+        
+        <record id="product_product_template_receipt_books" model="product.template">
+            <field name="name">Receipt Books</field>
+            <field name="image" type="base64" file="print_erp/static/img/Receipts-Book.jpg"/>
+            <field name="categ_id" ref='product_category_receipt_books'/>
+        </record>
+        
+        <record id="product_product_template_brochures" model="product.template">
+            <field name="name">Brochures</field>
+            <field name="image" type="base64" file="print_erp/static/img/Brochure.jpg"/>
+            <field name="categ_id" ref='product_category_brochures'/>
+        </record>
+        
+        <record id="product_product_template_folders_dockets" model="product.template">
+            <field name="name">Folders-Dockets</field>
+            <field name="image" type="base64" file="print_erp/static/img/Folders-Dockets.jpg"/>
+            <field name="categ_id" ref='product_category_folders_dockets'/>
+        </record>
+        
+        <record id="product_product_template_flyers" model="product.template">
+            <field name="name">Flyers</field>
+            <field name="image" type="base64" file="print_erp/static/img/flayer.png"/>
+            <field name="categ_id" ref='product_category_flyers'/>
+        </record>
+        
+        
+        <!-- product Variant -->
+        <record id="product_attribute_line_bcard_clr" model="product.attribute.line">
+            <field name="product_tmpl_id" ref='product_product_template_business_card'/>
+            <field name="attribute_id" ref='product_attribute_color'/>
+            <field name="value_ids" eval="[(4, ref('product_attribute_value_single')),
+                                           (4, ref('product_attribute_value_multi'))]"/>
+        </record>
+        
+        <record id="product_attribute_line_bcard_material" model="product.attribute.line">
+            <field name="product_tmpl_id" ref='product_product_template_business_card'/>
+            <field name="attribute_id" ref='product_attribute_material'/>
+            <field name="value_ids" eval="[(4, ref('product_attribute_value_300gsm_matt')),
+                                           (4, ref('product_attribute_value_350gsm_matt'))]"/>
+        </record>
+    </data>
+</odoo>
